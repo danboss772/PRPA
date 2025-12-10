@@ -35,8 +35,10 @@ int comp2(const void* a, const void* b)
 }
 
 void printer(SLOVO* slova, int pocet_slov, int elko, int esko){
+	if (elko > 0){
 	printf("Seznam slov:\n");
-	int i = 0;
+	}
+	int i = 0, d = 0;
 	if (esko == 1){
 		qsort(slova, pocet_slov, sizeof(SLOVO), comp);
 	}
@@ -56,13 +58,21 @@ void printer(SLOVO* slova, int pocet_slov, int elko, int esko){
 	}
 	printf("Pocet slov:          %d\n", pocet_slov);
 	printf("Nejcastejsi:        ");
-	int k
-	if (esko == 0){
-	qsort(slova, pocet_slov, sizeof(SLOVO), comp);
+	int k;
 	k = slova[pocet_slov-1].pocet_vyskytu;
+	if (esko == 0){
+		qsort(slova, pocet_slov, sizeof(SLOVO), comp);
+		d = slova[0].pocet_vyskytu;
+		k = slova[pocet_slov-1].pocet_vyskytu;
+	}
+	if (esko == 1){
+		qsort(slova, pocet_slov, sizeof(SLOVO), comp);
+		k = slova[pocet_slov-1].pocet_vyskytu;
+		d = slova[0].pocet_vyskytu;
 	}
 	if (esko == 2){
 		qsort(slova, pocet_slov, sizeof(SLOVO), comp);
+		d = slova[0].pocet_vyskytu;
 		k = slova[pocet_slov-1].pocet_vyskytu;
 		qsort(slova, pocet_slov, sizeof(SLOVO), comp2);
 	}
@@ -79,9 +89,11 @@ void printer(SLOVO* slova, int pocet_slov, int elko, int esko){
 	printf("Nejmene caste:      ");
 	i = 0;
 	k = slova[0].pocet_vyskytu;
-	while (i < pocet_slov && slova[i].pocet_vyskytu == k){
+	while (i < pocet_slov){
+	if (slova[i].pocet_vyskytu == d){
 		printf(" ");
 		printf("%s", slova[i].text);
+		}
 		i++;
 	}
 	printf("\n");
@@ -185,12 +197,12 @@ int main(int argc, char *argv[])
   		if (i < argc-1){
   			i++;
   			if (sscanf(argv[i], " %d", &esko) != 1){
-  				fprintf(stderr, "Warning: Chybna hodnota parametru -l!\n");
+  				fprintf(stderr, "Warning: Chybna hodnota parametru -s!\n");
   				esko = 0;
   				
   			}
   			if (esko!= 1 && esko != 2){
-  				fprintf(stderr, "Warning: Chybna hodnota parametru -l!\n");
+  				fprintf(stderr, "Warning: Chybna hodnota parametru -s!\n");
   				esko = 0;
   			}
   			i--;
